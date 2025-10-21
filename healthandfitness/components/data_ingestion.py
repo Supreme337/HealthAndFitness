@@ -5,8 +5,8 @@ import numpy as np
 import pymongo
 from dotenv import load_dotenv
 
-from healthandfitness.utils.logger import logging
-from healthandfitness.utils.exception import healthandfitnessException
+from healthandfitness.logging.logger import logging
+from healthandfitness.exception.exception import healthandfitnessException
 from healthandfitness.entity.config_entity import DataIngestionConfig
 from healthandfitness.entity.artifact_entity import DataIngestionArtifact
 
