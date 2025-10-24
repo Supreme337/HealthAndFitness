@@ -21,3 +21,9 @@ class DataTransformationArtifact:
     transformed_object_file_path:str
     imputer_object_file_path:str
     categorical_columns_file_path:str
+
+@dataclass
+class ModelTrainerArtifact:
+    trained_model_file_path:str
+    train_score:float
+    test_score:float

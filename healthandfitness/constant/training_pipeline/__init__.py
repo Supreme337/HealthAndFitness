@@ -13,6 +13,11 @@ TRAIN_FILE_NAME="train.csv"
 TEST_FILE_NAME="test.csv"
 PREPROCESSING_OBJECT_FILE_NAME="preprocessing.pkl"
 
+COLUMNS_TO_DROP=['BMI_calc', 'cal_from_macros', 'pct_carbs', 'protein_per_kg', 'pct_HRR', 'pct_maxHR',
+    'cal_balance', 'expected_burn', 'Burns Calories (per 30 min)_bc',
+    'Name of Exercise', 'Benefit', 'Workout', 'Body Part', 'Type of Muscle',
+    'meal_name', 'meal_type', 'cooking_method', 'rating']
+
 SCHEMA_FILE_PATH=os.path.join("data_schema","schema.yaml")
 
 """Data Ingestion Constants"""
@@ -42,3 +47,12 @@ DATA_TRANSFORMATION_IMPIUTER_PARAMS={
 }
 DATA_TRANSFORMATION_TRAIN_FILE_PATH='train.npy'
 DATA_TRANSFORMATION_TEST_FILE_PATH="test.npy"
+IMPUTER_OBJECT_FILE_NAME="imputer.pkl"
+CATEGORICAL_COLUMNS_FILE_NAME="categorical_columns.pkl"
+
+"""Model Trainer Constants"""
+MODEL_TRAINER_DIR_NAME="model_trainer"
+MODEL_TRAINER_TRAINED_MODEL_DIR="trained_model"
+MODEL_FILE_NAME="model.pkl"
+MODEL_TRAINER_EXPECTED_SCORE=0.7
+MODEL_TRAINER_OVERFITTING_THRESHOLD=0.1

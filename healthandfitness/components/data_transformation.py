@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from typing import List
 from healthandfitness.exception.exception import HealthAndFitnessException
+from healthandfitness.constant.training_pipeline import COLUMNS_TO_DROP
 from healthandfitness.logging.logger import logging
 from healthandfitness.entity.config_entity import DataTransformationConfig
 from healthandfitness.entity.artifact_entity import DataValidationArtifact,DataTransformationArtifact
@@ -61,6 +62,10 @@ class DataTransformation:
             logging.info('Started Data Transformation')
             train_df=DataTransformation.read_data(self.data_validation_artifact.valid_train_file_path)
             test_df=DataTransformation.read_data(self.data_validation_artifact.valid_test_file_path)
+
+            columns_to_drop=COLUMNS_TO_DROP
+            train_df.drop(columns=[col for col in columns_to_drop if col in train_df.columns],inplace=True)
+            test_df.drop(columns=[col for col in columns_to_drop if col in test_df.columns],inplace=True)
 
             num_cols,cat_cols=self.separate_columns(train_df)
             train_df=self.handle_missing_values(train_df,num_cols,cat_cols)
