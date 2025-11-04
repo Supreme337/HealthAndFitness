@@ -27,3 +27,10 @@ class ModelTrainerArtifact:
     trained_model_file_path:str
     train_score:float
     test_score:float
+
+@dataclass
+class ClassificationMetricArtifact:
+    precision_score:float
+    recall_score:float
+    f1_score:float
+    accuracy_score:float

@@ -1,0 +1,68 @@
+schema:
+  columns:
+    Age: int
+    Gender: object
+    Height: float
+    Weight: float
+    Fat_Percentage: float
+    Duration: float
+    Heart_Rate: float
+    Body_Temperature: float
+    Session_Duration: float
+    Activity_Level: object
+    Diet_Type: object
+    Sleep_Hours: float
+    Water_Intake: float
+    Steps_Per_Day: int
+    Workout_Type: object
+    Health_Score: float
+    Fitness_Goal: object
+    Target: int  
+
+  # ✅ Target column
+  target_column: Target
+
+  # ✅ Categorical columns for CatBoost
+  categorical_columns:
+    - Gender
+    - Activity_Level
+    - Diet_Type
+    - Workout_Type
+    - Fitness_Goal
+
+  # ✅ Columns to drop 
+  drop_columns:
+    - BMI_calc
+    - cal_from_macros
+    - pct_carbs
+    - protein_per_kg
+    - pct_HRR
+    - pct_maxHR
+    - cal_balance
+    - expected_burn
+    - Burns Calories (per 30 min)_bc
+    - Name of Exercise
+    - Benefit
+    - Workout
+    - Body Part
+    - Type of Muscle
+    - meal_name
+    - meal_type
+    - cooking_method
+    - rating
+
+  # ✅ Numerical columns 
+  numerical_columns:
+    - Age
+    - Height
+    - Weight
+    - Fat_Percentage
+    - Duration
+    - Heart_Rate
+    - Body_Temperature
+    - Session_Duration
+    - Sleep_Hours
+    - Water_Intake
+    - Steps_Per_Day
+    - Health_Score
+

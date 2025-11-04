@@ -40,7 +40,7 @@ PREPROCESSING_OBJECT_FILE_NAME="preprocessing.pkl"
 DATA_TRANSFORMATION_DIR_NAME="data_transformation"
 DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR="transformed"
 DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR="transformed_object"
-DATA_TRANSFORMATION_IMPIUTER_PARAMS={
+DATA_TRANSFORMATION_IMPUTER_PARAMS={
     "missing_values":np.nan,
     "n_neighbors":3,
     "weights":"uniform"

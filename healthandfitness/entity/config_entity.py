@@ -35,7 +35,7 @@ class DataValidationConfig:
         self.invalid_train_file_path:str=os.path.join(self.invalid_data_dir,training_pipeline.TRAIN_FILE_NAME)
         self.invalid_test_file_path:str=os.path.join(self.invalid_data_dir,training_pipeline.TEST_FILE_NAME)
         self.drift_report_file_path:str=os.path.join(self.data_validation_dir,training_pipeline.DATA_VALIDATION_DRIFT_REPORT_DIR,training_pipeline.DATA_VALIDATION_DRIFT_REPORT_FILE_NAME)
-        
+
 class DataTransformationConfig:
     def __init__(self,training_pipeline_config:TrainingPipelineConfig):
         self.data_transformation_dir:str=os.path.join(training_pipeline_config.artifact_dir,training_pipeline.DATA_TRANSFORMATION_DIR_NAME)
@@ -49,5 +49,5 @@ class ModelTrainerConfig:
     def __init__(self,training_pipeline_config:TrainingPipelineConfig):
         self.model_trainer_dir:str=os.path.join(training_pipeline_config.artifact_dir,training_pipeline.MODEL_TRAINER_DIR_NAME)
         self.trained_model_file_path:str=os.path.join(self.model_trainer_dir,training_pipeline.MODEL_TRAINER_TRAINED_MODEL_DIR)
-        self.expected_score:str=os.path.join(self.model_trainer_dir,training_pipeline.MODEL_TRAINER_EXPECTED_SCORE)
-        self.overfitting_threshold=os.path.join(self.model_trainer_dir,training_pipeline.MODEL_TRAINER_OVERFITTING_THRESHOLD)
+        self.expected_score:float=training_pipeline.MODEL_TRAINER_EXPECTED_SCORE
+        self.overfitting_threshold:float=training_pipeline.MODEL_TRAINER_OVERFITTING_THRESHOLD

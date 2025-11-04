@@ -8,13 +8,14 @@ from healthandfitness.exception.exception import HealthAndFitnessException
 from healthandfitness.logging.logger import logging
 from healthandfitness.utils.main_utils.utils import read_yaml_file, write_yaml_file
 from scipy.stats import ks_2samp
+from healthandfitness.constant.training_pipeline import SCHEMA_FILE_PATH
 
 class DataValidation:
     def __init__(self,data_ingestion_artifact:DataIngestionArtifact,data_validation_config:DataValidationConfig):
         try:
             self.data_ingestion_artifact=data_ingestion_artifact
             self.data_validation_config=data_validation_config
-            self._schema_config=read_yaml_file(self.data_validation_config.schema_file_path)
+            self._schema_config=read_yaml_file(SCHEMA_FILE_PATH)
         except Exception as e:
             raise HealthAndFitnessException(e,sys)
         
@@ -79,6 +80,9 @@ class DataValidation:
             status=self.detect_dataset_drift(base_df=train_dataframe,current_df=test_dataframe)
             dir_path=os.path.dirname(self.data_validation_config.drift_report_file_path)
             os.makedirs(dir_path,exist_ok=True)
+
+            os.makedirs(os.path.dirname(self.data_validation_config.valid_train_file_path),exist_ok=True)
+            os.makedirs(os.path.dirname(self.data_validation_config.valid_test_file_path),exist_ok=True)
 
             train_dataframe.to_csv(self.data_validation_config.valid_train_file_path,index=False,header=True)
             test_dataframe.to_csv(self.data_validation_config.valid_test_file_path,index=False,header=True)

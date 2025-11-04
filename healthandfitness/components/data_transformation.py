@@ -17,11 +17,11 @@ from sklearn.impute import KNNImputer
 class DataTransformation:
     def __init__(self,data_transformation_config:DataTransformationConfig,data_validation_artifact:DataValidationArtifact):
         try:
-            self.data_transformation_config:DataTransformationConfig=data_transformation_config
-            self.data_validation_artifact:DataValidationArtifact=data_validation_artifact
+            self.data_transformation_config=data_transformation_config
+            self.data_validation_artifact=data_validation_artifact
         except Exception as e:
-            raise HealthAndFitnessException(e,sys)
-    
+            raise HealthAndFitnessException(e, sys)
+
     @staticmethod
     def read_data(file_path:str)->pd.DataFrame:
         try:
@@ -31,16 +31,16 @@ class DataTransformation:
         except Exception as e:
             raise HealthAndFitnessException(e,sys)
     
-    def separate_columns(elf,df:pd.DataFrame):
+    def separate_columns(self,df:pd.DataFrame):
         try:
             num_cols=df.select_dtypes(include=np.number).columns.to_list()
             cat_cols=df.select_dtypes(exclude=np.number).columns.to_list()
-            logging.info(f"Found len({num_cols}) numeric and len({cat_cols}) categorical columns")
+            logging.info(f"Found {len(num_cols)} numeric and {len(cat_cols)} categorical columns")
             return num_cols, cat_cols
         except Exception as e:
             raise HealthAndFitnessException(e,sys)
-    
-    def handle_missing_values(self,df=pd.DataFrame, num_cols:List[str], cat_cols:List[str])->pd.DataFrame:
+
+    def handle_missing_values(self,df:pd.DataFrame,num_cols:List[str],cat_cols:List[str])->pd.DataFrame:
         try:
             if num_cols:
                 imputer=KNNImputer(n_neighbors=3)
@@ -76,8 +76,6 @@ class DataTransformation:
             save_object(cat_col_path,cat_cols)
             logging.info(f"Saved categorical column list with {len(cat_cols)} features.")
 
-            save_object(self.data_transformation_config.imputer_object_file_path,imputer_object)
-
             os.makedirs(os.path.dirname(self.data_transformation_config.transformed_train_file_path),exist_ok=True)
             train_df.to_csv(self.data_transformation_config.transformed_train_file_path,index=False)
             test_df.to_csv(self.data_transformation_config.transformed_test_file_path,index=False)
@@ -86,7 +84,7 @@ class DataTransformation:
                 transformed_train_file_path=self.data_transformation_config.transformed_train_file_path,
                 transformed_test_file_path=self.data_transformation_config.transformed_test_file_path,
                 transformed_object_file_path=self.data_transformation_config.transformed_object_file_path,
-                categorical_columns_path=cat_col_path,
+                categorical_columns_file_path=cat_col_path,
                 imputer_object_file_path=self.data_transformation_config.imputer_object_file_path,
             )
             logging.info("Data Transformation successfully completed")
