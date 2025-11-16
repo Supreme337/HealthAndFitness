@@ -11,7 +11,7 @@ from catboost import CatBoostClassifier
 from healthandfitness.exception.exception import HealthAndFitnessException
 from healthandfitness.constant.training_pipeline import TARGET_COLUMN
 from healthandfitness.logging.logger import logging
-from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.metrics import accuracy_score,confusion_matrix
 from healthandfitness.utils.ml_utils.classification_metric import get_classification_score
 from healthandfitness.entity.config_entity import ModelTrainerConfig
 from healthandfitness.entity.artifact_entity import ModelTrainerArtifact,DataTransformationArtifact
@@ -76,6 +76,7 @@ class ModelTrainer:
     def initiate_model_trainer(self)->ModelTrainerArtifact:
         try:
             logging.info("Model Trainer Initiated...")
+            preprocessor=load_object(self.data_transformation_artifact.preprocessor_object_file_path)
 
             train_df=pd.read_csv(self.data_transformation_artifact.transformed_train_file_path)
             test_df=pd.read_csv(self.data_transformation_artifact.transformed_test_file_path)
@@ -107,7 +108,17 @@ class ModelTrainer:
         
             os.makedirs(os.path.dirname(self.model_trainer_config.trained_model_file_path),exist_ok=True)
             save_object(self.model_trainer_config.trained_model_file_path,model)
-            logging.info(f"Saved trained model at:{self.model_trainer_config.trained_model_file_path}")
+
+            final_model_dir=os.path.join(os.getcwd(),"final_model")
+            os.makedirs(final_model_dir,exist_ok=True)
+
+            model_path=os.path.join(final_model_dir,"model.pkl")
+            save_object(model_path,model)
+            logging.info(f"Saved final model at:{model_path}")
+
+            processor_path=os.path.join(final_model_dir,"processor.pkl")
+            save_object(os.path.join(final_model_dir,"processor.pkl"),load_object(self.data_transformation_artifact.preprocessor_object_file_path))
+            logging.info(f"Saved final processor at:{processor_path}")
 
             modeltrainerartifact=ModelTrainerArtifact(
                 trained_model_file_path=self.model_trainer_config.trained_model_file_path,

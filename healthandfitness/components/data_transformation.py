@@ -52,7 +52,9 @@ class DataTransformation:
                 for col in cat_cols:
                     df[col]=df[col].fillna("Missing")
                     logging.info(" Missing values in categorical columns filled with 'Missing'")
-
+            
+            preprocessor={"imputer":imputer,"categorical_columns": cat_cols,"numerical_columns": num_cols}
+            save_object(self.data_transformation_config.preprocessor_object_file_path,preprocessor)
             return df
         except Exception as e:
             raise HealthAndFitnessException(e,sys)
@@ -86,6 +88,7 @@ class DataTransformation:
                 transformed_object_file_path=self.data_transformation_config.transformed_object_file_path,
                 categorical_columns_file_path=cat_col_path,
                 imputer_object_file_path=self.data_transformation_config.imputer_object_file_path,
+                preprocessor_object_file_path=os.path.join(self.data_transformation_config.transformed_object_file_path)
             )
             logging.info("Data Transformation successfully completed")
             return datatransformationartifact

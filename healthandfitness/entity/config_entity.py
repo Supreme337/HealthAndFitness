@@ -44,6 +44,7 @@ class DataTransformationConfig:
         self.transformed_object_file_path:str=os.path.join(self.data_transformation_dir,training_pipeline.DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR,training_pipeline.PREPROCESSING_OBJECT_FILE_NAME)
         self.imputer_object_file_path:str=os.path.join(self.data_transformation_dir,training_pipeline.DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR,training_pipeline.IMPUTER_OBJECT_FILE_NAME)
         self.categorical_columns_file_path:str=os.path.join(self.data_transformation_dir,training_pipeline.DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR,training_pipeline.CATEGORICAL_COLUMNS_FILE_NAME)
+        self.preprocessor_object_file_path=os.path.join(self.data_transformation_dir,training_pipeline.DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR,training_pipeline.PREPROCESSOR_OBJECT_FILE_NAME)
 
 class ModelTrainerConfig:
     def __init__(self,training_pipeline_config:TrainingPipelineConfig):
@@ -51,3 +52,6 @@ class ModelTrainerConfig:
         self.trained_model_file_path:str=os.path.join(self.model_trainer_dir,training_pipeline.MODEL_TRAINER_TRAINED_MODEL_DIR)
         self.expected_score:float=training_pipeline.MODEL_TRAINER_EXPECTED_SCORE
         self.overfitting_threshold:float=training_pipeline.MODEL_TRAINER_OVERFITTING_THRESHOLD
+        self.final_model_dir=os.path.join(training_pipeline_config.artifact_dir,"final_model")
+        self.final_model_model_path=os.path.join(self.final_model_dir,"model.pkl")
+        self.final_model_processor_path=os.path.join(self.final_model_dir,"processor.pkl")

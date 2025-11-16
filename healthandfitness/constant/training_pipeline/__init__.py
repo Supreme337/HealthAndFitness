@@ -49,6 +49,8 @@ DATA_TRANSFORMATION_TRAIN_FILE_PATH='train.npy'
 DATA_TRANSFORMATION_TEST_FILE_PATH="test.npy"
 IMPUTER_OBJECT_FILE_NAME="imputer.pkl"
 CATEGORICAL_COLUMNS_FILE_NAME="categorical_columns.pkl"
+PREPROCESSOR_OBJECT_FILE_NAME ="preprocessing.pkl"
+
 
 """Model Trainer Constants"""
 MODEL_TRAINER_DIR_NAME="model_trainer"
