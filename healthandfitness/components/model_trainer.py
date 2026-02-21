@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 import joblib
 import matplotlib.pyplot as plt
 import seaborn as sns
-from catboost import CatBoostClassifier
+from catboost import CatBoostClassifier,Pool
 from healthandfitness.exception.exception import HealthAndFitnessException
 from healthandfitness.constant.training_pipeline import TARGET_COLUMN
 from healthandfitness.logging.logger import logging
@@ -28,17 +28,26 @@ class ModelTrainer:
         except Exception as e:
             raise HealthAndFitnessException(e,sys)
 
-    def train_model(self,x_train,y_train,cat_cols):
-        try:
-            model=CatBoostClassifier(iterations=500,learning_rate=0.05,depth=8,cat_features=cat_cols,verbose=False)
-            if TARGET_COLUMN in cat_cols:
-                cat_cols.remove(TARGET_COLUMN)
-            model.fit(x_train,y_train)
-            return model
-        except Exception as e:
-            raise HealthAndFitnessException(e,sys)
-    
-    def log_mlflow(self,model,x_test,y_test,train_acc,test_acc):
+    def train_model(self, X_train, y_train):
+        cat_cols=load_object(self.data_transformation_artifact.categorical_columns_file_path)
+        cat_indices=[X_train.columns.get_loc(col) for col in cat_cols]
+        for col in cat_cols:
+            X_train[col]=X_train[col].astype(str)
+
+        train_pool=Pool(
+            data=X_train,
+            label=y_train,
+            cat_features=cat_indices)
+
+        model=CatBoostClassifier(
+            iterations=500,
+            learning_rate=0.05,
+            depth=8,
+            verbose=False)
+        model.fit(train_pool)
+        return model
+
+    def log_mlflow(self,model,X_test,y_test,train_acc,test_acc):
         with mlflow.start_run(run_name="Catboost_Trainer"):
             mlflow.log_param("iterations",500)
             mlflow.log_param("learning_rate",0.05)
@@ -46,7 +55,7 @@ class ModelTrainer:
             mlflow.log_metric("train_accuracy",train_acc)
             mlflow.log_metric("test_accuracy",test_acc)
             
-            y_pred=model.predict(x_test)
+            y_pred=model.predict(X_test)
             cm=confusion_matrix(y_test,y_pred)
             plt.figure(figsize=(5,4))
             sns.heatmap(cm,annot=True,fmt="d",cmap="Blues")
@@ -77,56 +86,63 @@ class ModelTrainer:
         try:
             logging.info("Model Trainer Initiated...")
             preprocessor=load_object(self.data_transformation_artifact.preprocessor_object_file_path)
+            cat_cols=load_object(self.data_transformation_artifact.categorical_columns_file_path)
 
             train_df=pd.read_csv(self.data_transformation_artifact.transformed_train_file_path)
             test_df=pd.read_csv(self.data_transformation_artifact.transformed_test_file_path)
-        
-            cat_cols=load_object(self.data_transformation_artifact.categorical_columns_file_path)
-            target_column=TARGET_COLUMN
 
-            x_train=train_df.drop([TARGET_COLUMN],axis=1)
+            X_train=train_df.drop(columns=[TARGET_COLUMN])
             y_train=train_df[TARGET_COLUMN]
-        
-            x_test=test_df.drop([TARGET_COLUMN],axis=1)
+            
+            X_test=test_df.drop(columns=[TARGET_COLUMN])
             y_test=test_df[TARGET_COLUMN]
 
             logging.info("Training CatBoost model...")
-            model=self.train_model(x_train,y_train,cat_cols)
+            model=self.train_model(X_train,y_train)
 
-            y_train_pred=model.predict(x_train)
-            y_test_pred=model.predict(x_test)
+            y_train_pred=model.predict(X_train)
+            y_test_pred=model.predict(X_test)
             train_metrics=get_classification_score(y_train,y_train_pred)
             test_metrics=get_classification_score(y_test,y_test_pred)
 
-            logging.info(f"Train Accuracy Score:{train_metrics.accuracy_score}")
-            logging.info(f"Test Accuracy Score:{test_metrics.accuracy_score}")
+            logging.info(f"Train Accuracy:{train_metrics.accuracy_score}")
+            logging.info(f"Test Accuracy:{test_metrics.accuracy_score}")
 
-            self.log_mlflow(model,x_test,y_test,train_metrics.accuracy_score,test_metrics.accuracy_score)
-
+            self.log_mlflow(model,X_test,y_test,train_metrics.accuracy_score,test_metrics.accuracy_score)
             if(train_metrics.accuracy_score-test_metrics.accuracy_score)>self.model_trainer_config.overfitting_threshold:
-                logging.warning("Model may be overfitting")
-        
+                logging.warning("Model is overfitting.")
+
             os.makedirs(os.path.dirname(self.model_trainer_config.trained_model_file_path),exist_ok=True)
             save_object(self.model_trainer_config.trained_model_file_path,model)
+            logging.info("Model Training completed successfully.")
 
-            final_model_dir=os.path.join(os.getcwd(),"final_model")
+            final_model_dir=os.path.join(os.getcwd(),"final_model") 
             os.makedirs(final_model_dir,exist_ok=True)
 
-            model_path=os.path.join(final_model_dir,"model.pkl")
-            save_object(model_path,model)
-            logging.info(f"Saved final model at:{model_path}")
+            model_path=os.path.join(final_model_dir,"model.pkl") 
+            save_object(model_path,model) 
+            logging.info(f"Saved final model at:{model_path}") 
 
-            processor_path=os.path.join(final_model_dir,"processor.pkl")
-            save_object(os.path.join(final_model_dir,"processor.pkl"),load_object(self.data_transformation_artifact.preprocessor_object_file_path))
+            processor_path=os.path.join(final_model_dir,"processor.pkl") 
+            save_object(processor_path,preprocessor) 
             logging.info(f"Saved final processor at:{processor_path}")
 
-            modeltrainerartifact=ModelTrainerArtifact(
+            cat_cols_path=os.path.join(final_model_dir,"categorical_columns.pkl")
+            cat_cols=load_object(self.data_transformation_artifact.categorical_columns_file_path)
+            save_object(cat_cols_path,cat_cols)
+            logging.info(f"Saved categorical columns at:{cat_cols_path}")
+
+            save_object("final_model/feature_names.pkl",X_train.columns.tolist())
+            feature_names=X_train.columns.tolist()
+            cat_indices=[feature_names.index(col) for col in cat_cols]
+            save_object("final_model/cat_indices.pkl",cat_indices)
+            logging.info("Saved feature names and categorical indices.")
+
+            return ModelTrainerArtifact(
                 trained_model_file_path=self.model_trainer_config.trained_model_file_path,
                 train_score=train_metrics.accuracy_score,
-                test_score=test_metrics.accuracy_score
-            )
-            logging.info("Model Training completed successfully.")
-            return modeltrainerartifact
+                test_score=test_metrics.accuracy_score)
         except Exception as e:
-            raise HealthAndFitnessException(e,sys)
+            raise HealthAndFitnessException(e, sys)
+
 

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Health & Fitness AI Predictor</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<div class="card">
+    <div class="card-header"><h1>Fitness Predictor</h1></div>
+    <p>Input your workout and lifestyle details to predict fitness outcome</p><br>
+    
+    <div class="card-subheader"><h2>Prediction Interpretation:</h2></div>
+    <p>High: You burn more than enough calories</p>
+    <p>Medium: You burn a moderate amount of calories</p>
+    <p>Low: You burn fewer calories than you consume</p>
+</div>
+
+<div class="card">
+    <form action="/predict_form" method="post">
+    <div class="form-grid">{{ form_html | safe }}</div>
+    <button type="submit">Predict</button>
+</form>
+</div>
+
+</body>
+</html>

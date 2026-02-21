@@ -10,3 +10,9 @@ catboost
 mlflow
 dagshub
 pyaml
+flask
+fastapi
+uvicorn
+joblib
+jinja2
+python-multipart
