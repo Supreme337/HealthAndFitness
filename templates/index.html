@@ -17,12 +17,11 @@
     <p>Low: You burn fewer calories than you consume</p>
 </div>
 
-<div class="card">
-    <form action="/predict_form" method="post">
-    <div class="form-grid">{{ form_html | safe }}</div>
+
+<form action="/predict_form" method="post">
+    {{ form_html | safe }}
     <button type="submit">Predict</button>
 </form>
-</div>
 
 </body>
 </html>

@@ -60,9 +60,9 @@ def generate_form_fields(cols,cat_cols,cat_values):
     sections=group_columns(cols)
     html=""
     for section, section_cols in sections.items():
-        html+=f"""<div class="section"><div class="section-header">{section}</div><div class="form-grid">"""
+        html+=f"""<div class="section-card"><div class="section-header">{section}</div><div class="form-grid">"""
         for col in section_cols:
-            placeholder = detect_placeholder(col)
+            placeholder=detect_placeholder(col)
             if col in cat_cols:
                 options="".join([f'<option value="{v}">{v}</option>' for v in cat_values.get(col,[])])
                 field=f"""<div class="input-group"><label>{col}</label><select name="{col}" required>{options}</select></div>"""
@@ -70,7 +70,7 @@ def generate_form_fields(cols,cat_cols,cat_values):
                 field=f"""<div class="input-group"><label>{col}</label><input type="number" step="any"name="{col}"placeholder="{placeholder}"required></div>"""
             
             html+=field
-        html+="""</div><div class="section-divider"></div></div>"""
+        html+="""</div></div>"""
     return html
 
 @app.get("/")
