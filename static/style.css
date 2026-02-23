@@ -123,3 +123,57 @@ input,select{
     border-bottom:1px solid rgba(255,255,255,0.1);
     padding-bottom:10px;
 }
+#hero{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100vh;
+}
+.hero-text{
+    position:absolute;
+    top:40%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
+    animation:fadeIn 2s ease;
+}
+.hidden{
+    display:none;
+}
+@keyframes fadeIn{
+    from{opacity:0; transform:translate(-50%,-40%);}
+    to{opacity:1; transform:translate(-50%,-50%);}
+}
+spline-viewer, iframe {
+    pointer-events: auto;
+}
+
+body {
+    overflow-y: scroll;
+}
+.spline-container {
+    position: relative;
+    width: 100%;
+    margin: auto;
+}
+.spline-container iframe {
+    width: 100vw;
+    height: 100vh;
+    border: none;
+}
+.spline-btn {
+    position: absolute;
+    right:1390px;  
+    top: 555px;    
+    width: 160px;
+    height: 60px;
+    background: rgba(255, 0, 0, 0); 
+    border:none;
+    cursor: pointer
+}
+spline-viewer{
+    width:100%;
+    height: 100%;
+    display:block;
+}

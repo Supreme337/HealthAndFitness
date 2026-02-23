@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 <html>
+    <div id="hero">
+        <div class="spline-container"><spline-viewer>
+    <iframe src='https://my.spline.design/websitelandingpage02-BcIlrmvU65WwaZrpkqO5qNwR/' frameborder='0' width='100%' height='100%'></iframe>
+        </spline-viewer>
+    <button class="spline-btn" onclick="showForm()"></button>
+</div>
+    <div class="hero-text">
+    </div>
+</div>
 <head>
     <title>Health & Fitness AI Predictor</title>
     <link rel="stylesheet" href="/static/style.css">
@@ -17,9 +26,31 @@
     <p>Low: You burn fewer calories than you consume</p>
 </div>
 
+<script>
+function showForm(){
+    document.getElementById("hero").style.display="none";
+    document.getElementById("appContent").classList.remove("hidden");
+    document.getElementById("bg3d").classList.remove("hidden");
+}
+function showForm(){
+    document.getElementById("formSection").style.display="block";
+}
+function showForm() {
+    document.getElementById("formSection").style.display = "block";
+}
+window.addEventListener("message", (event) => {
+    if (event.data === "showForm") {
+        document.getElementById("formSection").style.display = "block";
+    }
+});
+document.querySelector("spline-viewer")
+.addEventListener("wheel", e => e.stopPropagation());
+</script>
 
 <form action="/predict_form" method="post">
+    <div id="formSection" style="display:none;">
     {{ form_html | safe }}
+</div>
     <button type="submit">Predict</button>
 </form>
 
