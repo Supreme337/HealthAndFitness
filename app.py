@@ -45,32 +45,57 @@ def detect_placeholder(cols):
 def detect_section(cols):
     col_lower=cols.lower()
     if any(k in col_lower for k in ["age","gender","bmi"]):
-        return "👤 Personal Info"
+        return "Personal Info"
 
     if any(k in col_lower for k in ["bpm","heart"]):
-        return "❤️ Heart Data"
+        return "Heart Data"
 
     if any(k in col_lower for k in ["workout","session","sets","exercise","reps"]):
-        return "🏋️ Workout"
+        return "Workout"
 
     if any(k in col_lower for k in ["calorie","diet","water","meal"]):
-        return "🥗 Nutrition"
+        return "Nutrition"
 
-def generate_form_fields(cols,cat_cols,cat_values):
-    sections=group_columns(cols)
-    html=""
+def generate_form_fields(cols, cat_cols, cat_values):
+    sections = group_columns(cols)
+    html = ""
     for section, section_cols in sections.items():
-        html+=f"""<div class="section-card"><div class="section-header">{section}</div><div class="form-grid">"""
+        html += f"""
+        <div class="section-card">
+            <div class="section-top">
+                <h2 class="section-header">{section}</h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        """
         for col in section_cols:
-            placeholder=detect_placeholder(col)
+            placeholder = detect_placeholder(col)
             if col in cat_cols:
-                options="".join([f'<option value="{v}">{v}</option>' for v in cat_values.get(col,[])])
-                field=f"""<div class="input-group"><label>{col}</label><select name="{col}" required>{options}</select></div>"""
+                options = "".join(
+                    [f'<option value="{v}">{v}</option>'
+                     for v in cat_values.get(col, [])]
+                )
+
+                field = f"""
+                <div class="input-group">
+                    <label>{col}</label>
+                    <select name="{col}" required>
+                        {options}
+                    </select>
+                </div>
+                """
             else:
-                field=f"""<div class="input-group"><label>{col}</label><input type="number" step="any"name="{col}"placeholder="{placeholder}"required></div>"""
-            
-            html+=field
-        html+="""</div></div>"""
+                field = f"""
+                <div class="input-group">
+                    <label>{col}</label>
+                    <input type="number" step="any"
+                        name="{col}"
+                        placeholder="{placeholder}"
+                        required>
+                </div>
+                """
+            html += field
+        html += "</div></div>"
     return html
 
 @app.get("/")
@@ -98,7 +123,17 @@ async def predict_form(request:Request):
 
         pool=Pool(df,cat_features=cat_indices)
         pred=model.predict(pool).flatten()[0]
-        return templates.TemplateResponse("result.html",{"request":request,"result":pred})
+
+        if pred=="Low":
+            interpretation="Low Fitness Level"
+            recommendation="Increase physical activity, start with light cardio, and build a consistent workout routine."
+        elif pred=="Medium":
+            interpretation="Moderate Fitness Level"
+            recommendation="Maintain your routine and gradually include strength training and endurance workouts."
+        else: 
+            interpretation="High Fitness Level"
+            recommendation="Great job! Maintain your fitness and consider optimizing performance with advanced training."
+        return templates.TemplateResponse("result.html",{"request":request,"result":pred,"interpretation":interpretation,"recommendation":recommendation})
     except Exception as e:
         traceback.print_exc()
         return HTMLResponse(f"<h2>Error:</h2><pre>{str(e)}</pre>")

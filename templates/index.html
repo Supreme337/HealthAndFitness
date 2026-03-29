@@ -1,58 +1,204 @@
 <!DOCTYPE html>
 <html>
-    <div id="hero">
-        <div class="spline-container"><spline-viewer>
-    <iframe src='https://my.spline.design/websitelandingpage02-BcIlrmvU65WwaZrpkqO5qNwR/' frameborder='0' width='100%' height='100%'></iframe>
-        </spline-viewer>
-    <button class="spline-btn" onclick="showForm()"></button>
-</div>
-    <div class="hero-text">
-    </div>
-</div>
 <head>
-    <title>Health & Fitness AI Predictor</title>
+    <title>Health & Fitness AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+<body class="min-h-screen text-white overflow-x-hidden">
+<div class="fixed inset-0 -z-10 bg-gradient-to-br from-indigo-500 to-blue-600"></div>
+<nav class="absolute top-0 left-0 w-full flex justify-between items-center px-10 py-6 z-20">
+    <h1 class="font-bold text-xl">FitAI</h1>
+    <div class="flex gap-8 text-white/90">
+        <a href="#hero" class="hover:text-white transition">Home</a>
+        <a href="#about" class="hover:text-white transition">About</a>
+    </div>
+</nav>
+<div id="mainContent">
+    <section id="hero" class="min-h-screen flex items-center px-10">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center w-full">
+            <div>
+                <h1 class="text-5xl md:text-6xl font-bold leading-tight animate-fadeUpHero delay-1">
+                    Predict Your <br> Fitness Journey
+                </h1>
+                <p class="mt-6 text-lg text-white/80 max-w-md animate-fadeUpHero delay-2">
+                    Use AI to analyze your body metrics, workouts, and habits 
+                    to predict your fitness progress faster and smarter.
+                </p>
+                <div class="mt-8 flex gap-4 animate-fadeUpHero delay-3">
+                    <button onclick="showForm()"
+                        class="px-6 py-3 rounded-lg font-medium 
+                        bg-white text-black hover:bg-gray-200 transition">
+                        Start Prediction →
+                    </button>
+                    <button onclick="document.getElementById('learn').scrollIntoView()"
+                        class="px-6 py-3 rounded-lg font-medium 
+                        bg-black text-white hover:bg-gray-800 transition">
+                        Learn More
+                    </button>
+                </div>
+            </div>
+            <div class="relative flex justify-center items-center">
+                <div class="absolute w-80 h-80 bg-white/10 backdrop-blur-xl rounded-3xl"></div>
+                <div class="absolute w-72 h-72 bg-white/20 backdrop-blur-xl rounded-3xl"></div>
+                <div class="absolute w-64 h-64 bg-white/30 backdrop-blur-xl rounded-3xl"></div>
+                <div class="w-56 h-56 bg-white/40 backdrop-blur-xl rounded-3xl animate-float"></div>
+            </div>
+        </div>
+    </section>
+    <section id="learn" class="min-h-screen px-10 py-20 section-fade">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold mb-6">How It Works</h2>
+            <p class="text-white/70 max-w-2xl mb-12">
+                This AI model predicts your fitness outcomes based on your personal data,
+                workout habits, and nutrition patterns.
+            </p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-xl">
+                    <h3 class="text-xl font-semibold mb-3">Inputs</h3>
+                    <p class="text-white/70">
+                        Age, BMI, heart rate, workout duration, calories burned,
+                        water intake, and more.
+                    </p>
+                </div>
+                <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-xl">
+                    <h3 class="text-xl font-semibold mb-3">Model</h3>
+                    <p class="text-white/70">
+                        Built using CatBoost, optimized for handling both
+                        numerical and categorical fitness data.
+                    </p>
+                </div>
+                <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-xl">
+                    <h3 class="text-xl font-semibold mb-3">Output</h3>
+                    <p class="text-white/70">
+                        Predicts your fitness-related metric based on patterns
+                        learned from training data.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="about" class="min-h-screen px-10 py-24 section-fade">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">About This Project</h2>
+                <p class="text-white/70 max-w-2xl mx-auto">
+                    A complete machine learning application designed to predict fitness outcomes 
+                    using structured data and modern AI techniques.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-xl hover:bg-white/15 transition">
+                    <h3 class="text-xl font-semibold mb-3">Model</h3>
+                    <p class="text-white/70">
+                        Built using CatBoost, leveraging its strength in handling 
+                        categorical and numerical data efficiently.
+                    </p>
+                </div>
+                <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-xl hover:bg-white/15 transition">
+                    <h3 class="text-xl font-semibold mb-3">Pipeline</h3>
+                    <p class="text-white/70">
+                        End-to-end ML pipeline including preprocessing, feature handling,
+                        and prediction served via FastAPI backend.
+                    </p>
+                </div>
+                <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-xl hover:bg-white/15 transition">
+                    <h3 class="text-xl font-semibold mb-3">Deployment</h3>
+                    <p class="text-white/70">
+                        Integrated with a responsive frontend using Tailwind CSS,
+                        creating a seamless user experience.
+                    </p>
+                </div>
+            </div>
+            <div class="mt-20 flex justify-center">
+                <div class="bg-gradient-to-r from-indigo-500 to-blue-500 
+                            p-[1px] rounded-2xl">
+                    <div class="bg-black/70 backdrop-blur-xl 
+                                px-10 py-8 rounded-2xl text-center">
 
-<body>
-
-<div class="card">
-    <div class="card-header"><h1>Fitness Predictor</h1></div>
-    <p>Input your workout and lifestyle details to predict fitness outcome</p><br>
-    
-    <div class="card-subheader"><h2>Prediction Interpretation:</h2></div>
-    <p>High: You burn more than enough calories</p>
-    <p>Medium: You burn a moderate amount of calories</p>
-    <p>Low: You burn fewer calories than you consume</p>
+                        <h3 class="text-2xl font-semibold mb-2">Built by Harsh Malik</h3>
+                        <p class="text-white/70 max-w-md">
+                            This project showcases my ability to design, build,
+                            and deploy a complete machine learning product — from 
+                            model training to a fully interactive web application.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
-
+<div id="formPage" class="hidden min-h-screen px-6 py-16">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <div class="sticky top-0 z-10 bg-black/30 backdrop-blur-md py-4 mb-8 text-center rounded-xl">
+                <h2 class="text-xl font-semibold">Fitness Prediction Form</h2>
+            </div>
+            <h2 class="text-4xl font-bold">Enter Your Details</h2>
+            <p class="text-white/70 mt-3">
+                Fill in your data to generate your fitness prediction
+            </p>
+        </div>
+        <form action="/predict_form" method="post" class="space-y-12 bg-white/5 p-8 rounded-3xl backdrop-blur-xl border border-white/10">
+            {{ form_html | safe }}
+            <div class="flex justify-center mt-12">
+                <button class="px-10 py-4 rounded-xl 
+                    bg-white text-black font-semibold text-lg
+                    shadow-lg hover:scale-105 hover:shadow-xl
+                    transition duration-300">
+                    Generate Prediction 
+                </button>
+            </div>
+            <button onclick="goHome()"
+            class="px-5 py-2 rounded-xl 
+                    bg-white text-black font-semibold text-lg
+                    shadow-lg hover:scale-105 hover:shadow-xl
+                    transition duration-300">
+            Back
+            </button>
+        </form>
+    </div>
+</div>
 <script>
 function showForm(){
-    document.getElementById("hero").style.display="none";
-    document.getElementById("appContent").classList.remove("hidden");
-    document.getElementById("bg3d").classList.remove("hidden");
+  document.getElementById("mainContent").style.display="none";
+  const page=document.getElementById("formPage");
+  page.classList.remove("hidden");
+  window.scrollTo(0,0);
+  document.querySelectorAll(".section-card").forEach((c,i)=>{
+    c.style.animationDelay=`${i*0.15}s`;
+  });
 }
-function showForm(){
-    document.getElementById("formSection").style.display="block";
-}
-function showForm() {
-    document.getElementById("formSection").style.display = "block";
-}
-window.addEventListener("message", (event) => {
-    if (event.data === "showForm") {
-        document.getElementById("formSection").style.display = "block";
-    }
-});
-document.querySelector("spline-viewer")
-.addEventListener("wheel", e => e.stopPropagation());
 </script>
-
-<form action="/predict_form" method="post">
-    <div id="formSection" style="display:none;">
-    {{ form_html | safe }}
-</div>
-    <button type="submit">Predict</button>
-</form>
-
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+    }
+  });
+}, {
+  threshold: 0.2
+});
+document.querySelectorAll(".section-fade").forEach(section => {
+  observer.observe(section);
+});
+</script>
+<script>
+function goHome(){
+  document.getElementById("formPage").classList.add("hidden");
+  document.getElementById("mainContent").style.display="block";
+  document.getElementById("hero").scrollIntoView({behavior: "smooth"});
+}
+</script>
+<style>
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+</style>
 </body>
 </html>

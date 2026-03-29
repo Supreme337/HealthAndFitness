@@ -2,19 +2,81 @@
 <html>
 <head>
     <title>Prediction Result</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-
-<body>
-
-<div class="card">
-    <div class="card-header"><h1>🎯 Prediction Result</h1></div>
-    <h2 style="color: #00c853;">{{ result }}</h2>
-    <p>This is your predicted fitness outcome based on the inputs</p>
-    <a href="/app">
-        <button>🔄 Try Another Prediction</button>
-    </a>
-</div>
-
+<body class="min-h-screen text-white overflow-x-hidden">
+    <div class="bg-gradient-to-br from-indigo-500 to-blue-600 fixed inset-0 -z-10"></div>
+    <div class="min-h-screen flex items-center justify-center px-6">
+        <div class="max-w-2xl w-full">
+            <div class="result-card text-center p-10">
+                <div class="top-0 z-10 bg-black/30 backdrop-blur-md py-1 mb-8  rounded-3xl">
+                <h1 class="section-header mt-4" style="font-size: 35px;">
+                    Prediction Complete
+                </h1></div>
+                <div style="margin-top: 20px;">
+                    <p style="color: rgba(255,255,255,0.6); margin-bottom: 8px;">
+                        Your Predicted Value
+                    </p>
+                    <p style="
+                        font-size: 48px;
+                        font-weight: bold;
+                        color: black;">
+                        {{ result }}
+                    </p>
+                </div>
+                <div style="
+                    margin-top: 20px;
+                    padding: 18px;
+                    border-radius: 14px;
+                    background: rgba(255,255,255,0.05);
+                    border: 1px solid rgba(0,255,255,0.3);">
+                    <p style="color: cyan; font-weight: 600; margin-bottom: 8px;">
+                        Interpretation
+                    </p>
+                    <p style="
+                        font-size: 22px;
+                        font-weight: bold;
+                        color: rgba(255,255,255,0.75); line-height: 1.6;">
+                        {{ interpretation }}
+                    </p>
+                </div>
+                <div style="
+                    margin-top: 20px;
+                    padding: 18px;
+                    border-radius: 14px;
+                    background: rgba(255,255,255,0.05);
+                    border: 1px solid rgba(0,255,255,0.3);">
+                    <p style="color: cyan; font-weight: 600; margin-bottom: 8px;">
+                        Recommendation
+                    </p>
+                    <p style="color: rgba(255,255,255,0.75); line-height: 1.6;">
+                        {{ recommendation }}
+                    </p>
+                </div>
+                <p style="
+                    margin-top: 20px;
+                    color: rgba(255,255,255,0.6);
+                    max-width: 400px;
+                    margin-left: auto;
+                    margin-right: auto;">
+                    This prediction is generated using your fitness data such as
+                    heart rate, activity level, and physiological metrics.
+                </p>
+                <a href="/app"
+                style="
+                    display: inline-block;
+                    margin-top: 30px;
+                    padding: 14px 28px;
+                    border-radius: 14px;
+                    background: white;
+                    color: black;
+                    font-weight: bold;
+                    text-decoration: none;">
+                Try Another Prediction
+                </a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
