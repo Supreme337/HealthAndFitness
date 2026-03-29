@@ -1,10 +1,7 @@
 import os
-import sys
 import joblib
-from narwhals import col
 import pandas as pd
-import numpy as np
-from fastapi import FastAPI,File,UploadFile,Request
+from fastapi import FastAPI,File,Request
 from catboost import Pool
 from fastapi import Form
 from fastapi.templating import Jinja2Templates
@@ -20,9 +17,8 @@ def get_path(*paths):
 
 app=FastAPI()
 
-
-templates=Jinja2Templates(directory="./templates")
-app.mount("/static",StaticFiles(directory="static"),name="static")
+templates=Jinja2Templates(directory=get_path("templates"))
+app.mount("/static",StaticFiles(directory=get_path("static")),name="static")
 
 model=joblib.load(get_path("final_model","model.pkl"))
 cat_cols=joblib.load(get_path("final_model","categorical_columns.pkl"))
