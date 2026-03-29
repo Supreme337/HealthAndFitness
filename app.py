@@ -12,17 +12,23 @@ from fastapi.responses import HTMLResponse,RedirectResponse
 from fastapi.staticfiles import StaticFiles
 import traceback
 from collections import defaultdict
+
+BASE_DIR=os.path.dirname(os.path.abspath(__file__))
+
+def get_path(*paths):
+    return os.path.join(BASE_DIR,*paths)
+
 app=FastAPI()
 
 
 templates=Jinja2Templates(directory="./templates")
 app.mount("/static",StaticFiles(directory="static"),name="static")
 
-model=joblib.load("final_model/model.pkl")
-cat_cols=joblib.load("final_model/categorical_columns.pkl")
-cols=joblib.load("final_model/feature_names.pkl")
-cat_indices=joblib.load("final_model/cat_indices.pkl")
-cat_values=joblib.load("final_model/categorical_values.pkl")
+model=joblib.load(get_path("final_model","model.pkl"))
+cat_cols=joblib.load(get_path("final_model","categorical_columns.pkl"))
+cols=joblib.load(get_path("final_model","feature_names.pkl"))
+cat_indices=joblib.load(get_path("final_model","cat_indices.pkl"))
+cat_values=joblib.load(get_path("final_model","categorical_values.pkl"))
 
 def group_columns(cols):
     sections=defaultdict(list)
