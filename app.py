@@ -9,9 +9,6 @@ from fastapi.responses import HTMLResponse,RedirectResponse
 from fastapi.staticfiles import StaticFiles
 import traceback
 from collections import defaultdict
-from jinja2 import FileSystemLoader,Environment
-from starlette.templating import Jinja2Templates
-
 
 BASE_DIR=os.path.dirname(os.path.abspath(__file__))
 
@@ -20,8 +17,7 @@ def get_path(*paths):
 
 app=FastAPI()
 
-jinja_env=Environment(loader=FileSystemLoader(str(os.path.join(BASE_DIR,"templates"))),auto_reload=True)
-templates=Jinja2Templates(env=jinja_env)
+templates=Jinja2Templates(directory=get_path("templates"))
 app.mount("/static",StaticFiles(directory=get_path("static")),name="static")
 
 model=joblib.load(get_path("final_model","model.pkl"))
